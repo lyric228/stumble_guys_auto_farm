@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QLabel, QWidget
 from keyboard import add_hotkey
 from PyQt6.QtGui import QIcon
+from PyQt6.QtCore import Qt
 from sys import argv, exit
 import pyautogui as pyag
 from time import sleep
@@ -9,57 +10,53 @@ from time import sleep
 class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Stumble Farm PRO v1.0")
+        self.setWindowTitle("Stumble Farm v1.2")
         self.setWindowIcon(QIcon("images\\icon.jpeg"))
         self.setFixedSize(300, 300)
         central_widget = QWidget(self)
         self.setCentralWidget(central_widget)
         layout = QVBoxLayout(central_widget)
-        self.label = QLabel("                            Включить фарм - 1\n \n                            Выключить фарм - 2", self)
+        self.label = QLabel("Enable - Press 1\n\nDisable - Press 2", self)
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.label_status = QLabel("Disabled", self)
+        self.label_status.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.label)
+        layout.addWidget(self.label_status)
 
-        buttons_info = [("1 Ивент", self.first_event_farm),
-                        ("2 Ивент", self.second_event_farm),
-                        ("3 Ивент", self.third_event_farm),
-                        ("Обычная игра", self.default_game_farm),
-                        ("Выйти", exit)]
+        buttons_info = [("1 Event", self.first_event_farm),
+                        ("2 Event", self.second_event_farm),
+                        ("3 Event", self.third_event_farm),
+                        ("Default Game", self.default_game_farm),
+                        ("Exit", exit)]
 
         for button_text, function in buttons_info:
             button = QPushButton(button_text, self)
             button.clicked.connect(function)
-            layout.addWidget(button)
+            layout.addWidget(button, alignment=Qt.AlignmentFlag.AlignCenter)
 
     def first_event_farm(self):
         global first_event, second_event, third_event, default_game
-        self.label.setText("Включить фарм - 1   Выключить фарм - 2\nВключен режим: 1 Ивент")
+        self.label_status.setText("AutoFarm: 1 Event")
         first_event = True
-        second_event = False
-        third_event = False
-        default_game = False
+        second_event, third_event, default_game = False * 3
 
     def second_event_farm(self):
         global first_event, second_event, third_event, default_game
-        self.label.setText("Включить фарм - 1   Выключить фарм - 2\nВключен режим: 2 Ивент")
+        self.label_status.setText("AutoFarm: 2 Event")
         second_event = True
-        first_event = False
-        third_event = False
-        default_game = False
+        first_event, third_event, default_game = False * 3
 
     def third_event_farm(self):
         global first_event, second_event, third_event, default_game
-        self.label.setText("Включить фарм - 1   Выключить фарм - 2\nВключен режим: 3 Ивент")
+        self.label_status.setText("AutoFarm: 3 Event")
         third_event = True
-        first_event = False
-        second_event = False
-        default_game = False
+        first_event, second_event, default_game = False * 3
 
     def default_game_farm(self):
         global first_event, second_event, third_event, default_game
-        self.label.setText("Включить фарм - 1   Выключить фарм - 2\nВключен режим: Обычная игра")
+        self.label_status.setText("AutoFarm: Default Game")
         default_game = True
-        first_event = False
-        second_event = False
-        third_event = False
+        first_event, second_event, third_event = False * 3
 
 
 app = QApplication(argv)
@@ -68,7 +65,7 @@ leave_x = 250
 leave_y = 1000
 take_x = 1777
 take_y = 1000
-default_game = True
+default_game = False
 first_event = False
 second_event = False
 third_event = False
@@ -110,6 +107,7 @@ def clicker():
 def off_clicker():
     global is_clicking
     is_clicking = False
+    return is_clicking
 
 
 add_hotkey("1", clicker)
