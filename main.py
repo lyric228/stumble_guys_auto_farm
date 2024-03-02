@@ -10,7 +10,7 @@ from time import sleep
 class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Stumble Farm v1.2")
+        self.setWindowTitle("Stumble Farm v1.21")
         self.setWindowIcon(QIcon("images\\icon.jpeg"))
         self.setFixedSize(300, 300)
         central_widget = QWidget(self)
@@ -38,25 +38,25 @@ class MyWindow(QMainWindow):
         global first_event, second_event, third_event, default_game
         self.label_status.setText("AutoFarm: 1 Event")
         first_event = True
-        second_event, third_event, default_game = False * 3
+        second_event, third_event, default_game = False, False, False
 
     def second_event_farm(self):
         global first_event, second_event, third_event, default_game
         self.label_status.setText("AutoFarm: 2 Event")
         second_event = True
-        first_event, third_event, default_game = False * 3
+        first_event, third_event, default_game = False, False, False
 
     def third_event_farm(self):
         global first_event, second_event, third_event, default_game
         self.label_status.setText("AutoFarm: 3 Event")
         third_event = True
-        first_event, second_event, default_game = False * 3
+        first_event, second_event, default_game = False, False, False
 
     def default_game_farm(self):
         global first_event, second_event, third_event, default_game
         self.label_status.setText("AutoFarm: Default Game")
         default_game = True
-        first_event, second_event, third_event = False * 3
+        first_event, second_event, third_event = False, False, False
 
 
 app = QApplication(argv)
@@ -65,10 +65,7 @@ leave_x = 250
 leave_y = 1000
 take_x = 1777
 take_y = 1000
-default_game = False
-first_event = False
-second_event = False
-third_event = False
+default_game, first_event, second_event, third_event = False, False, False, False
 pyag.FAILSAFE = False
 
 
